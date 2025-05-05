@@ -18,7 +18,7 @@ Each task below represents a complete mini-project that solves a real-world prob
 
 📧 Contact
 
-# 📘 Task 1: Flashcard Quiz App
+# 📘 Task 1: Flashcard Quiz App (fq.html)
 🎯 Description
 A Flashcard Quiz App built to help users study effectively. Users can create custom flashcards with their own questions and answers, then test themselves by flipping the cards and tracking their score.
 
@@ -43,7 +43,7 @@ JavaScript for flashcard logic, score tracking, and interactivity
 🚀 Demo
 Add your GitHub Pages or Netlify link here
 
- # 📝 Task 2: Random Quote Generator
+ # 📝 Task 2: Random Quote Generator (rgp.html)
 🎯 Description
 This Random Quote Generator is a fun, dynamic web app that displays a random motivational or humorous quote each time a user clicks a button. It can be expanded to include API integrations or social media sharing features.
 
@@ -71,7 +71,7 @@ JavaScript (DOM manipulation, array logic, optional API)
 🚀 Demo
 Add your live project link here
 
-# 💪 Task 3: Fitness Tracker App
+# 💪 Task 3: Fitness Tracker App (fta.html)
 🎯 Description
 A simple but powerful Fitness Tracker Web App designed to help users log workouts, set goals, and track their fitness journey. It works as a personal digital gym notebook.
 
@@ -105,7 +105,7 @@ JavaScript
 🚀 Demo
 Link here
 
-# 🌍 Task 4: Language Learning App
+# 🌍 Task 4: Language Learning App (lp.html)
 🎯 Description
 The Language Learning App is an educational and gamified tool to help users learn new languages through interactive lessons and quizzes. It provides a friendly and motivating environment.
 
