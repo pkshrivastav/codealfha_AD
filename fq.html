@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flashcard Quiz App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 8px 0;
+      width: 90%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .card {
+      background-color: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .quiz-section {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flashcard Quiz App</h1>
+
+  <div class="container">
+    <h2>Add Flashcard</h2>
+    <input type="text" id="question" placeholder="Enter question">
+    <input type="text" id="answer" placeholder="Enter answer">
+    <button onclick="addFlashcard()">Add Flashcard</button>
+
+    <h2>Flashcards</h2>
+    <div id="flashcard-list"></div>
+
+    <button onclick="startQuiz()">Start Quiz</button>
+
+    <div class="quiz-section" id="quiz-section">
+      <h2>Quiz</h2>
+      <div id="quiz-card" class="card"></div>
+      <input type="text" id="user-answer" placeholder="Your answer">
+      <button onclick="submitAnswer()">Submit</button>
+      <p id="feedback"></p>
+      <p id="score"></p>
+    </div>
+  </div>
+
+  <script>
+    let flashcards = [];
+    let currentQuestion = 0;
+    let score = 0;
+
+    function addFlashcard() {
+      const question = document.getElementById("question").value.trim();
+      const answer = document.getElementById("answer").value.trim();
+      if (question && answer) {
+        flashcards.push({ question, answer });
+        document.getElementById("question").value = "";
+        document.getElementById("answer").value = "";
+        displayFlashcards();
+      } else {
+        alert("Please enter both question and answer.");
+      }
+    }
+
+    function displayFlashcards() {
+      const list = document.getElementById("flashcard-list");
+      list.innerHTML = "";
+      flashcards.forEach((card, index) => {
+        list.innerHTML += `<div class="card"><strong>Q:</strong> ${card.question}<br/><strong>A:</strong> ${card.answer}</div>`;
+      });
+    }
+
+    function startQuiz() {
+      if (flashcards.length === 0) {
+        alert("Add some flashcards first.");
+        return;
+      }
+      document.getElementById("quiz-section").style.display = "block";
+      currentQuestion = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const quizCard = document.getElementById("quiz-card");
+      const card = flashcards[currentQuestion];
+      quizCard.innerHTML = `<strong>Question ${currentQuestion + 1}:</strong><br>${card.question}`;
+      document.getElementById("user-answer").value = "";
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("score").innerText = `Score: ${score}/${flashcards.length}`;
+    }
+
+    function submitAnswer() {
+      const userInput = document.getElementById("user-answer").value.trim().toLowerCase();
+      const correctAnswer = flashcards[currentQuestion].answer.toLowerCase();
+
+      if (userInput === correctAnswer) {
+        document.getElementById("feedback").innerText = "✅ Correct!";
+        score++;
+      } else {
+        document.getElementById("feedback").innerText = `❌ Incorrect! Answer: ${flashcards[currentQuestion].answer}`;
+      }
+
+      document.getElementById("score").innerText = `Score: ${score}/${flashcards.length}`;
+
+      currentQuestion++;
+      if (currentQuestion < flashcards.length) {
+        setTimeout(showQuestion, 1500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("quiz-card").innerText = "Quiz completed!";
+          document.getElementById("feedback").innerText = `Final Score: ${score}/${flashcards.length}`;
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>

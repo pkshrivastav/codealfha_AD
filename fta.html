@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .form-section {
+      margin-bottom: 20px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    #history {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fitness Tracker App</h1>
+
+    <section class="form-section">
+      <h2>Add Workout</h2>
+      <input type="text" id="type" placeholder="Workout Type (e.g. Running)" />
+      <input type="number" id="duration" placeholder="Duration (minutes)" />
+      <input type="number" id="calories" placeholder="Calories Burned" />
+      <button onclick="addWorkout()">Add Workout</button>
+    </section>
+
+    <section class="form-section">
+      <h2>Set Goals</h2>
+      <input type="number" id="goalDuration" placeholder="Goal Duration (minutes)" />
+      <input type="number" id="goalCalories" placeholder="Goal Calories" />
+      <button onclick="setGoals()">Set Goals</button>
+    </section>
+
+    <section>
+      <h2>Workout History</h2>
+      <div id="history"></div>
+    </section>
+
+    <section>
+      <h2>Progress</h2>
+      <p id="progressDuration"></p>
+      <p id="progressCalories"></p>
+    </section>
+  </div>
+
+  <script>
+    let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+    let goals = JSON.parse(localStorage.getItem("goals")) || { duration: 0, calories: 0 };
+
+    function addWorkout() {
+      const type = document.getElementById("type").value;
+      const duration = parseInt(document.getElementById("duration").value);
+      const calories = parseInt(document.getElementById("calories").value);
+
+      if (!type || !duration || !calories) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      const workout = {
+        type,
+        duration,
+        calories,
+        date: new Date().toLocaleString()
+      };
+
+      workouts.push(workout);
+      localStorage.setItem("workouts", JSON.stringify(workouts));
+
+      updateHistory();
+      updateProgress();
+
+      document.getElementById("type").value = "";
+      document.getElementById("duration").value = "";
+      document.getElementById("calories").value = "";
+    }
+
+    function setGoals() {
+      goals.duration = parseInt(document.getElementById("goalDuration").value) || 0;
+      goals.calories = parseInt(document.getElementById("goalCalories").value) || 0;
+      localStorage.setItem("goals", JSON.stringify(goals));
+      updateProgress();
+      alert("Goals set!");
+    }
+
+    function updateHistory() {
+      const historyDiv = document.getElementById("history");
+      historyDiv.innerHTML = "";
+      workouts.slice().reverse().forEach(w => {
+        const item = document.createElement("div");
+        item.innerHTML = `<strong>${w.type}</strong> - ${w.duration} min, ${w.calories} kcal <br><small>${w.date}</small><hr>`;
+        historyDiv.appendChild(item);
+      });
+    }
+
+    function updateProgress() {
+      const totalDuration = workouts.reduce((acc, w) => acc + w.duration, 0);
+      const totalCalories = workouts.reduce((acc, w) => acc + w.calories, 0);
+
+      document.getElementById("progressDuration").textContent = `Total Duration: ${totalDuration}/${goals.duration} min`;
+      document.getElementById("progressCalories").textContent = `Total Calories: ${totalCalories}/${goals.calories} kcal`;
+    }
+
+    // Initialize
+    updateHistory();
+    updateProgress();
+  </script>
+</body>
+</html>
